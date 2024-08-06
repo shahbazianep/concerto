@@ -489,7 +489,7 @@ class Home extends Component {
                                     SCOPES
                                 )}&client_id=${
                                     process.env.REACT_APP_CLIENT_ID
-                                }&redirect_uri=${"http://localhost:3000"}&response_type=${RESPONSE_TYPE}`)
+                                }&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`)
                             }
                         >
                             Log in to Spotify

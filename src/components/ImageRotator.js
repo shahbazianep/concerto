@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { artistsDictionary } from "../utils/artistsDictionary";
 import anime from "animejs";
 import "../App.css";

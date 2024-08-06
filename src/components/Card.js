@@ -92,7 +92,7 @@ export default function Card(props) {
             </div>
             <div className={"concertCardDetailText"}>
                 <WatchLater sx={{ fontSize: 16, marginRight: 1 }} />
-                {convertTime(props.time)}
+                {props.time ? convertTime(props.time) : "---"}
             </div>
             <div className={"concertCardPriceText"}>{price}</div>
         </div>

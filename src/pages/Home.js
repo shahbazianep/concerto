@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import { StyledEngineProvider } from "@mui/material/styles";
 
-import { TICKETMASTER_KEY, CLIENT_ID } from "../keys.js";
 import anime from "animejs";
 
 const REDIRECT_URI = "http://localhost:3000";
@@ -152,7 +151,7 @@ class Home extends Component {
                 await new Promise((resolve) => setTimeout(resolve, delay));
 
                 const response = await axios.get(
-                    `https://app.ticketmaster.com/discovery/v2/attractions?apikey=${TICKETMASTER_KEY}&keyword=${artistName}&locale=*`
+                    `https://app.ticketmaster.com/discovery/v2/attractions?apikey=${process.env.TICKETMASTER_KEY}&keyword=${artistName}&locale=*`
                 );
 
                 let attractionIndex = 0;
@@ -196,7 +195,7 @@ class Home extends Component {
 
                 if ("_embedded" in response.data && urlMatchError === false) {
                     const concerts = await axios.get(
-                        `https://app.ticketmaster.com/discovery/v2/events?apikey=${TICKETMASTER_KEY}&attractionId=${attractions[attractionIndex].id}&locale=*`
+                        `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.TICKETMASTER_KEY}&attractionId=${attractions[attractionIndex].id}&locale=*`
                     );
 
                     if (
@@ -485,7 +484,7 @@ class Home extends Component {
                         <div
                             className={"homeLoginText"}
                             onClick={() =>
-                                (window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`)
+                                (window.location.href = `${AUTH_ENDPOINT}?client_id=${process.env.CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`)
                             }
                         >
                             Log in to Spotify

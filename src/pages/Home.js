@@ -20,6 +20,7 @@ import anime from "animejs";
 const REDIRECT_URI = "https://concerto-phi.vercel.app/";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
+const SCOPES = "playlist-read-private playlist-read-collaborative";
 
 function importAll(r) {
     let images = {};
@@ -484,67 +485,78 @@ class Home extends Component {
                         <div
                             className={"homeLoginText"}
                             onClick={() =>
-                                (window.location.href = `${AUTH_ENDPOINT}?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`)
+                                (window.location.href = `${AUTH_ENDPOINT}?scope=${encodeURIComponent(
+                                    SCOPES
+                                )}&client_id=${
+                                    process.env.REACT_APP_CLIENT_ID
+                                }&redirect_uri=${"http://localhost:3000"}&response_type=${RESPONSE_TYPE}`)
                             }
                         >
                             Log in to Spotify
                         </div>
                     ) : (
                         <div className={"homeInput"}>
-                            <TextField
-                                value={this.state.searchKey}
-                                onChange={(event) => {
-                                    this.setState({
-                                        searchKey: event.target.value,
-                                        searchError: false,
-                                    });
-                                }}
-                                variant="outlined"
-                                placeholder="Paste your Spotify playlist link here"
-                                sx={{
-                                    backgroundColor: "transparent",
-                                    width: "400px",
-                                    fontFamily: "Circular-Std",
-                                    "& .MuiOutlinedInput-root": {
-                                        "& > fieldset": {
-                                            borderColor: "#fefefe",
-                                            borderWidth: "2px",
-                                        },
-                                        "&:hover fieldset": {
-                                            borderColor: "#fefefe",
-                                        },
-                                        "&.Mui-focused fieldset": {
-                                            borderColor: "#fefefe",
-                                        },
+                            <form onSubmit={this.searchPlaylist}>
+                                <TextField
+                                    value={this.state.searchKey}
+                                    onSubmit={this.searchPlaylist}
+                                    onChange={(event) => {
+                                        this.setState({
+                                            searchKey: event.target.value,
+                                            searchError: false,
+                                        });
+                                    }}
+                                    variant="outlined"
+                                    placeholder="Paste your Spotify playlist link here"
+                                    sx={{
                                         backgroundColor: "transparent",
+                                        width: "400px",
                                         fontFamily: "Circular-Std",
-                                        color: "#fefefe",
-                                    },
-                                }}
-                                inputProps={{ autoComplete: "off" }}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <PlayArrow
-                                                style={{
-                                                    cursor: "pointer",
-                                                    fontSize: 24,
-                                                    color: "#5339f8",
-                                                }}
-                                                onClick={this.searchPlaylist}
-                                            />
-                                        </InputAdornment>
-                                    ),
-                                    sx: {
-                                        borderRadius: "10px",
-                                        backgroundColor: this.state.searchError
-                                            ? "#fef6f9"
-                                            : "#f9f9ff",
-                                        fontFamily: "Nunito-Medium",
-                                        color: "#1f1f1f",
-                                    },
-                                }}
-                            />
+                                        "& .MuiOutlinedInput-root": {
+                                            "& > fieldset": {
+                                                borderColor: "#fefefe",
+                                                borderWidth: "2px",
+                                            },
+                                            "&:hover fieldset": {
+                                                borderColor: "#fefefe",
+                                            },
+                                            "&.Mui-focused fieldset": {
+                                                borderColor: "#fefefe",
+                                            },
+                                            backgroundColor: "transparent",
+                                            fontFamily: "Circular-Std",
+                                            color: "#fefefe",
+                                        },
+                                    }}
+                                    inputProps={{ autoComplete: "off" }}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <PlayArrow
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        fontSize: 24,
+                                                        color: "#5339f8",
+                                                    }}
+                                                    onClick={
+                                                        this.searchPlaylist
+                                                    }
+                                                    type="submit"
+                                                />
+                                            </InputAdornment>
+                                        ),
+                                        sx: {
+                                            borderRadius: "10px",
+                                            backgroundColor: this.state
+                                                .searchError
+                                                ? "#fef6f9"
+                                                : "#f9f9ff",
+                                            fontFamily: "Nunito-Medium",
+                                            color: "#1f1f1f",
+                                        },
+                                    }}
+                                />
+                            </form>
                             {this.state.searchError && (
                                 <div className={"homeErrorText"}>
                                     Invalid search. Please try again

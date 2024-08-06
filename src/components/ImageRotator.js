@@ -57,7 +57,7 @@ function getRandomSongDetails(c, randomIndex) {
     }
 }
 
-const ImageRotator = ({ images, interval = 6000 }) => {
+const ImageRotator = ({ images }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(1);
     const [randomIndex, setRandomIndex] = useState(0);
     const [currentImageSource, setCurrentImageSource] = useState(
@@ -75,9 +75,11 @@ const ImageRotator = ({ images, interval = 6000 }) => {
         }, 2000);
         anime({
             targets: ["#album-cover", "#song-details"],
-            keyframes: [{ opacity: 0 }, { opacity: 1 }],
+            keyframes: [
+                { opacity: 0, easing: "easeInCubic" },
+                { opacity: 1, easing: "easeInOutCubic" },
+            ],
             duration: 4000,
-            easing: "easeInOutExpo",
         });
     };
 
@@ -98,17 +100,22 @@ const ImageRotator = ({ images, interval = 6000 }) => {
             easing: "easeInOutExpo",
         });
         anime({
-            targets: ["#album-cover", "#song-details", ".loadingButtons"],
+            targets: "#album-cover",
             opacity: [0, 1],
-            delay: 4500,
+            duration: 1000,
+            delay: 3500,
+            easing: "easeInOutExpo",
+        });
+        anime({
+            targets: ["#song-details", ".loadingButtons"],
+            opacity: [0, 1],
+            delay: 5000,
             duration: 1000,
             easing: "easeInOutExpo",
         });
         let intervalId = null;
         setTimeout(() => {
-            intervalId = setInterval(() => {
-                changeAlbum();
-            }, 4000);
+            intervalId = setInterval(changeAlbum, 4000);
         }, 5200);
         return () => clearInterval(intervalId);
     }, []);
@@ -121,19 +128,6 @@ const ImageRotator = ({ images, interval = 6000 }) => {
                 flexDirection: "row",
             }}
         >
-            {/* <img
-                src={images[`${randomArray[currentImageIndex]}.jpg`]}
-                alt="Rotating Image"
-                className={`image-transition ${
-                    isLoadingNextImage ? "hidden" : ""
-                }`}
-                style={{
-                    width: 270,
-                    borderRadius: 10,
-                    height: 270,
-                    filter: "blur(10px)",
-                }}
-            /> */}
             <img
                 src={currentImageSource}
                 alt="Album Cover"
@@ -177,6 +171,9 @@ const ImageRotator = ({ images, interval = 6000 }) => {
                             fontSize: 24,
                             paddingTop: 4,
                             paddingBottom: 4,
+                            textWrap: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
                         }}
                     >
                         {
@@ -191,6 +188,9 @@ const ImageRotator = ({ images, interval = 6000 }) => {
                             fontFamily: "Circular-Std",
                             color: "#e2e2e2",
                             fontSize: 18,
+                            textWrap: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
                         }}
                     >
                         {

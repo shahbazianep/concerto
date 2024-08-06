@@ -2,30 +2,18 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import Tile from "../components/Tile";
-// import ImageCarousel from "../components/ImageCarousel";
 
 import "../App.css";
 import "../styles.css";
 import { Navigate } from "react-router";
+import { Logout, PlayArrow } from "@mui/icons-material";
 import {
-    Logout,
-    PlayArrow,
-    SkipPrevious,
-    SkipNext,
-    FastRewindRounded,
-    FastForwardRounded,
-    PauseRounded,
-} from "@mui/icons-material";
-import {
-    Button,
-    ButtonBase,
     IconButton,
     InputAdornment,
     LinearProgress,
     TextField,
 } from "@mui/material";
 import { StyledEngineProvider } from "@mui/material/styles";
-import ImageRotator from "../components/ImageRotator";
 
 import { TICKETMASTER_KEY, CLIENT_ID } from "../keys.js";
 import anime from "animejs";

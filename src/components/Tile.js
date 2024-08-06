@@ -16,6 +16,7 @@ export default function Tile(props) {
                     transform: "rotate(-45deg)",
                     objectFit: "cover",
                 }}
+                alt="Artist Concert"
                 src={props.image}
             />
         </div>

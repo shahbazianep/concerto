@@ -2,7 +2,7 @@ import fx from "money";
 import { stateAbbreviations } from "../utils/states";
 import "../styles.css";
 import { conversionRates } from "../utils/conversionRates";
-import { Place, Schedule, WatchLater } from "@mui/icons-material";
+import { Place, WatchLater } from "@mui/icons-material";
 
 fx.base = "USD";
 fx.rates = conversionRates;

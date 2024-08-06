@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Card from "../components/Card";
 import { useLocation, useNavigate } from "react-router";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -35,7 +35,9 @@ fx.rates = conversionRates;
 function Results() {
     const location = useLocation();
     const navigate = useNavigate();
-    const initialEvents = location.state.events || [];
+    const initialEvents = useMemo(() => {
+        return location.state.events || [];
+    }, [location.state.events]);
     const [events, setEvents] = useState(initialEvents);
     const { artists } = location.state || [];
     const [selectedCountry, setSelectedCountry] = useState(null);
@@ -56,17 +58,9 @@ function Results() {
     const [artistList, setArtistList] = useState([]);
     const [filteredArtists, setFilteredArtists] = useState([]);
     const accentGreen = "#5339f8";
-    const darkColor = "#121212";
     const lightColor = "#fefefe";
 
-    useEffect(() => {
-        filterCountries();
-        addGenres();
-        addArtists();
-        console.log(events);
-    }, [location]); // deleted events from this array to solve constant reassignment, maybe causes issues later idk
-
-    const addGenres = () => {
+    const addGenres = useCallback(() => {
         const genres = {};
         for (const artist in initialEvents) {
             initialEvents[artist].forEach((e) => {
@@ -92,9 +86,9 @@ function Results() {
             filt[gen] = true;
         }
         setFilteredGenres(filt);
-    };
+    }, [initialEvents]);
 
-    const addArtists = () => {
+    const addArtists = useCallback(() => {
         const artists = [];
         for (const artist in initialEvents) {
             if (!artists.includes(artist)) {
@@ -110,9 +104,9 @@ function Results() {
         }
         setFilteredArtists(filt);
         console.log(filt);
-    };
+    }, [initialEvents]);
 
-    const filterCountries = () => {
+    const filterCountries = useCallback(() => {
         const countries = {};
         const states = {};
         for (const artist in initialEvents) {
@@ -146,7 +140,7 @@ function Results() {
 
         setCountryList(sortedCountries);
         setStateList(sortedStates);
-    };
+    }, [initialEvents]);
 
     const handleFilterChange = (fieldName, newValue) => {
         const updatedFilters = {
@@ -251,6 +245,13 @@ function Results() {
         }
         setEvents(filteredEvents);
     };
+
+    useEffect(() => {
+        filterCountries();
+        addGenres();
+        addArtists();
+        console.log(events);
+    }, [location, events, filterCountries, addGenres, addArtists]); // deleted events from this array to solve constant reassignment, maybe causes issues later idk
 
     return (
         <ThemeProvider theme={theme}>

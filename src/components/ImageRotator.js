@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { artistsDictionary } from "../utils/artistsDictionary";
 import anime from "animejs";
 import "../App.css";
@@ -64,6 +64,27 @@ const ImageRotator = ({ images, interval = 6000 }) => {
         images[`${randomArray[1]}.jpg`]
     );
     const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        setCurrentImageSource(images[`${randomArray[currentImageIndex]}.jpg`]);
+    }, [currentImageIndex, images]);
+
+    const changeAlbum = useCallback(() => {
+        if (!loaded) {
+            return;
+        }
+        setTimeout(() => {
+            setRandomIndex(Math.floor(Math.random() * 3));
+            setCurrentImageIndex((prevIndex) => prevIndex + 1);
+        }, 2000);
+        anime({
+            targets: ["#album-cover", "#song-details"],
+            keyframes: [{ opacity: 0 }, { opacity: 1 }],
+            duration: 4000,
+            easing: "easeInOutExpo",
+        });
+    }, [loaded]);
+
     useEffect(() => {
         anime({
             targets: "#loading-title",
@@ -98,28 +119,8 @@ const ImageRotator = ({ images, interval = 6000 }) => {
             changeAlbum();
         }, 5000);
         return () => clearInterval(intervalId);
-    }, []);
+    }, [changeAlbum]);
 
-    useEffect(() => {
-        setCurrentImageSource(images[`${randomArray[currentImageIndex]}.jpg`]);
-    }, [currentImageIndex]);
-
-    const changeAlbum = () => {
-        console.log(loaded);
-        if (!loaded) {
-            return;
-        }
-        setTimeout(() => {
-            setRandomIndex(Math.floor(Math.random() * 3));
-            setCurrentImageIndex((prevIndex) => prevIndex + 1);
-        }, 2000);
-        anime({
-            targets: ["#album-cover", "#song-details"],
-            keyframes: [{ opacity: 0 }, { opacity: 1 }],
-            duration: 4000,
-            easing: "easeInOutExpo",
-        });
-    };
     return (
         <div
             style={{
@@ -143,7 +144,7 @@ const ImageRotator = ({ images, interval = 6000 }) => {
             /> */}
             <img
                 src={currentImageSource}
-                alt="Rotating Image"
+                alt="Album Cover"
                 style={{
                     width: 270,
                     height: 270,

@@ -63,16 +63,12 @@ const ImageRotator = ({ images, interval = 6000 }) => {
     const [currentImageSource, setCurrentImageSource] = useState(
         images[`${randomArray[1]}.jpg`]
     );
-    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         setCurrentImageSource(images[`${randomArray[currentImageIndex]}.jpg`]);
     }, [currentImageIndex, images]);
 
-    const changeAlbum = useCallback(() => {
-        if (!loaded) {
-            return;
-        }
+    const changeAlbum = () => {
         setTimeout(() => {
             setRandomIndex(Math.floor(Math.random() * 3));
             setCurrentImageIndex((prevIndex) => prevIndex + 1);
@@ -83,13 +79,13 @@ const ImageRotator = ({ images, interval = 6000 }) => {
             duration: 4000,
             easing: "easeInOutExpo",
         });
-    }, [loaded]);
+    };
 
     useEffect(() => {
         anime({
             targets: "#loading-title",
             translateX: { value: [-120, 0], delay: 3000 },
-            translateY: { value: [80, 0], delay: 4200 },
+            translateY: { value: [70, 0], delay: 4200 },
             delay: 4000,
             duration: 1000,
             easing: "easeInOutExpo",
@@ -107,19 +103,15 @@ const ImageRotator = ({ images, interval = 6000 }) => {
             delay: 4500,
             duration: 1000,
             easing: "easeInOutExpo",
-            complete: () => {
-                console.log("done");
-                setTimeout(() => {
-                    console.log("here");
-                    setLoaded(true);
-                }, 1000);
-            },
         });
-        const intervalId = setInterval(() => {
-            changeAlbum();
-        }, 5000);
+        let intervalId = null;
+        setTimeout(() => {
+            intervalId = setInterval(() => {
+                changeAlbum();
+            }, 4000);
+        }, 5200);
         return () => clearInterval(intervalId);
-    }, [changeAlbum]);
+    }, []);
 
     return (
         <div

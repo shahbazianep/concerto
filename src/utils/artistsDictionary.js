@@ -598,7 +598,7 @@ export const artistsDictionary = [
         name: "Peach Pit", // Being So Normal
         songs: [
             { title: "Tommy's Party", featured: [] },
-            { title: "Alrighty Ahprodite", featured: [] },
+            { title: "Alrighty Aphrodite", featured: [] },
             { title: "Being So Normal", featured: [] },
         ],
     },

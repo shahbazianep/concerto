@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { artistsDictionary } from "../utils/artistsDictionary";
-
+import anime from "animejs";
 import "../App.css";
+import {
+    FastRewindRounded,
+    FastForwardRounded,
+    PauseRounded,
+} from "@mui/icons-material";
 
 function generateRandomArray(length, min, max, minDistance) {
     const result = [];
@@ -52,33 +57,78 @@ function getRandomSongDetails(c, randomIndex) {
     }
 }
 
-const ImageRotator = ({ images, interval = 2000 }) => {
+const ImageRotator = ({ images, interval = 6000 }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(1);
-    const [isLoadingNextImage, setIsLoadingNextImage] = useState(false);
     const [randomIndex, setRandomIndex] = useState(0);
+    const [currentImageSource, setCurrentImageSource] = useState(
+        images[`${randomArray[1]}.jpg`]
+    );
+    const [loaded, setLoaded] = useState(false);
     useEffect(() => {
-        const timer = setInterval(() => {
-            setIsLoadingNextImage(true);
-            setTimeout(() => {
-                setCurrentImageIndex((prevIndex) => prevIndex + 1);
-                setIsLoadingNextImage(false);
-                setRandomIndex(Math.floor(Math.random() * 3));
-            }, 1000); // Delay to ensure the image is fully loaded before changing
-        }, interval);
-        return () => clearInterval(timer);
-    }, [images, interval]);
+        anime({
+            targets: "#loading-title",
+            translateX: { value: [-120, 0], delay: 3000 },
+            translateY: { value: [80, 0], delay: 4200 },
+            delay: 4000,
+            duration: 1000,
+            easing: "easeInOutExpo",
+        });
+        anime({
+            targets: ".loadingTimer",
+            translateX: [-150, 0],
+            delay: 3000,
+            duration: 1000,
+            easing: "easeInOutExpo",
+        });
+        anime({
+            targets: ["#album-cover", "#song-details", ".loadingButtons"],
+            opacity: [0, 1],
+            delay: 4500,
+            duration: 1000,
+            easing: "easeInOutExpo",
+            complete: () => {
+                console.log("done");
+                setTimeout(() => {
+                    console.log("here");
+                    setLoaded(true);
+                }, 1000);
+            },
+        });
+        const intervalId = setInterval(() => {
+            changeAlbum();
+        }, 5000);
+        return () => clearInterval(intervalId);
+    }, []);
+
+    useEffect(() => {
+        setCurrentImageSource(images[`${randomArray[currentImageIndex]}.jpg`]);
+    }, [currentImageIndex]);
+
+    const changeAlbum = () => {
+        console.log(loaded);
+        if (!loaded) {
+            return;
+        }
+        setTimeout(() => {
+            setRandomIndex(Math.floor(Math.random() * 3));
+            setCurrentImageIndex((prevIndex) => prevIndex + 1);
+        }, 2000);
+        anime({
+            targets: ["#album-cover", "#song-details"],
+            keyframes: [{ opacity: 0 }, { opacity: 1 }],
+            duration: 4000,
+            easing: "easeInOutExpo",
+        });
+    };
     return (
         <div
             style={{
                 position: "relative",
-                alignItems: "center",
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                height: 390,
+                flexDirection: "row",
             }}
         >
-            <img
+            {/* <img
                 src={images[`${randomArray[currentImageIndex]}.jpg`]}
                 alt="Rotating Image"
                 className={`image-transition ${
@@ -88,53 +138,84 @@ const ImageRotator = ({ images, interval = 2000 }) => {
                     width: 270,
                     borderRadius: 10,
                     height: 270,
-                    position: "absolute",
                     filter: "blur(10px)",
                 }}
-            />
+            /> */}
             <img
-                src={images[`${randomArray[currentImageIndex]}.jpg`]}
+                src={currentImageSource}
                 alt="Rotating Image"
-                className={`image-transition ${
-                    isLoadingNextImage ? "hidden" : ""
-                }`}
                 style={{
                     width: 270,
                     height: 270,
                     borderRadius: 10,
-                    position: "absolute",
                 }}
+                id={"album-cover"}
             />
             <div
                 style={{
-                    position: "absolute",
-                    top: 350,
-                    height: 60,
-                    width: 270,
-                    textAlign: "left",
-                    opacity: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    marginTop: 40,
+                    marginLeft: 30,
                 }}
-                className={`image-transition ${
-                    isLoadingNextImage ? "hidden" : ""
-                }`}
             >
                 <div
                     style={{
-                        fontFamily: "Nunito-Medium",
-                        color: "#1f1f1f",
-                        fontSize: 20,
+                        fontFamily: "Circular-Std",
+                        fontSize: 16,
+                        color: "#757575",
                     }}
+                    id={"loading-title"}
                 >
-                    {getRandomSongDetails(currentImageIndex, randomIndex)[0]}
+                    NOW LOADING CONCERTS
                 </div>
                 <div
                     style={{
-                        fontFamily: "Nunito-Light",
-                        color: "#757575",
-                        fontSize: 16,
+                        width: 270,
+                        height: 60,
+                        opacity: 1,
                     }}
+                    id={"song-details"}
                 >
-                    {getRandomSongDetails(currentImageIndex, randomIndex)[1]}
+                    <div
+                        style={{
+                            fontFamily: "Circular-Std",
+                            color: "#fefefe",
+                            fontSize: 24,
+                            paddingTop: 4,
+                            paddingBottom: 4,
+                        }}
+                    >
+                        {
+                            getRandomSongDetails(
+                                currentImageIndex,
+                                randomIndex
+                            )[0]
+                        }
+                    </div>
+                    <div
+                        style={{
+                            fontFamily: "Circular-Std",
+                            color: "#e2e2e2",
+                            fontSize: 18,
+                        }}
+                    >
+                        {
+                            getRandomSongDetails(
+                                currentImageIndex,
+                                randomIndex
+                            )[1]
+                        }
+                    </div>
+                </div>
+                <div className={"loadingButtons"}>
+                    <FastRewindRounded
+                        sx={{ color: "#fefefe", fontSize: 48 }}
+                    />
+                    <PauseRounded sx={{ color: "#fefefe", fontSize: 48 }} />
+                    <FastForwardRounded
+                        sx={{ color: "#fefefe", fontSize: 48 }}
+                    />
                 </div>
             </div>
         </div>

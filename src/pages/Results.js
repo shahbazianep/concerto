@@ -24,7 +24,7 @@ import "../styles.css";
 
 const theme = createTheme({
     typography: {
-        fontFamily: "Nunito-Light",
+        fontFamily: "Circular-Std",
         fontSize: 14,
     },
 });
@@ -48,26 +48,30 @@ function Results() {
     const [openLocation, setOpenLocation] = useState(false);
     const [openPrice, setOpenPrice] = useState(false);
     const [openGenre, setOpenGenre] = useState(false);
+    const [openArtist, setOpenArtist] = useState(false);
     const [countryList, setCountryList] = useState({});
     const [stateList, setStateList] = useState({});
     const [genreList, setGenreList] = useState({});
     const [filteredGenres, setFilteredGenres] = useState({});
+    const [artistList, setArtistList] = useState([]);
+    const [filteredArtists, setFilteredArtists] = useState([]);
     const accentGreen = "#5339f8";
     const darkColor = "#121212";
     const lightColor = "#fefefe";
 
     useEffect(() => {
-        console.log(events);
         filterCountries();
         addGenres();
+        addArtists();
+        console.log(events);
     }, [location]); // deleted events from this array to solve constant reassignment, maybe causes issues later idk
 
     const addGenres = () => {
         const genres = {};
         for (const artist in initialEvents) {
-            initialEvents[artist].filter((e) => {
-                let g = e.classifications[0].genre.name;
-                let sg = e.classifications[0].subGenre.name;
+            initialEvents[artist].forEach((e) => {
+                let g = e.classifications[0].genre?.name;
+                let sg = e.classifications[0].subGenre?.name;
                 if (g in genres) {
                     genres[g] += 1;
                 } else {
@@ -78,16 +82,34 @@ function Results() {
                 } else {
                     genres[sg] = 1;
                 }
-                return true;
             });
         }
         delete genres["Undefined"];
+        delete genres["undefined"];
         setGenreList(genres);
         const filt = {};
         for (const gen in genres) {
             filt[gen] = true;
         }
         setFilteredGenres(filt);
+    };
+
+    const addArtists = () => {
+        const artists = [];
+        for (const artist in initialEvents) {
+            if (!artists.includes(artist)) {
+                artists.push(artist);
+            }
+        }
+        setArtistList(artists);
+        const filt = {};
+        console.log(artists);
+        for (const a in artists) {
+            console.log(artists[a]);
+            filt[artists[a]] = true;
+        }
+        setFilteredArtists(filt);
+        console.log(filt);
     };
 
     const filterCountries = () => {
@@ -136,6 +158,7 @@ function Results() {
             highPrice: ticketPrice[1],
             includeUnlisted: includeUnlisted,
             filteredGenres: filteredGenres,
+            filteredArtists: filteredArtists,
         };
         if (fieldName === "date1") {
             updatedFilters.selectedDate1 = newValue;
@@ -174,6 +197,11 @@ function Results() {
             updatedFilters.filteredGenres[newValue] =
                 !updatedFilters.filteredGenres[newValue];
             setFilteredGenres(updatedFilters.filteredGenres);
+        } else if (fieldName === "artistCheckbox") {
+            updatedFilters.filteredArtists[newValue] =
+                !updatedFilters.filteredArtists[newValue];
+            setFilteredArtists(updatedFilters.filteredArtists);
+            console.log(updatedFilters.filteredArtists);
         }
         const filteredEvents = {};
         for (const artist in initialEvents) {
@@ -208,11 +236,13 @@ function Results() {
                         (!("priceRanges" in e) &&
                             updatedFilters.includeUnlisted)) &&
                     (updatedFilters.filteredGenres[
-                        e.classifications[0].genre.name
+                        e.classifications[0].genre?.name
                     ] ||
                         updatedFilters.filteredGenres[
-                            e.classifications[0].subGenre.name
-                        ])
+                            e.classifications[0].subGenre?.name
+                        ] ||
+                        e.classifications.genre === undefined) &&
+                    updatedFilters.filteredArtists[artist]
                 );
             });
             if (artistEvents.length > 0) {
@@ -237,6 +267,79 @@ function Results() {
                     <div className={"resultsFilterTitle"}>Filters</div>
 
                     <div className={"resultsFilterMenu"}>
+                        <div className={"filterText"}>
+                            <div
+                                className={"filter"}
+                                onClick={() => {
+                                    setOpenArtist(!openArtist);
+                                }}
+                            >
+                                <div>Artist</div>
+                                <div
+                                    style={{
+                                        alignItems: "center",
+                                        display: "flex",
+                                    }}
+                                >
+                                    {openArtist ? (
+                                        <ExpandLess />
+                                    ) : (
+                                        <ExpandMore />
+                                    )}
+                                </div>
+                            </div>
+
+                            <Collapse in={openArtist}>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                    }}
+                                >
+                                    {artistList.map((artist) => {
+                                        return (
+                                            <FormControlLabel
+                                                sx={{
+                                                    "& .MuiTypography-root": {
+                                                        fontSize: 16,
+                                                        color: lightColor,
+                                                    },
+                                                }}
+                                                key={artist}
+                                                control={
+                                                    <Checkbox
+                                                        disableRipple
+                                                        disableTouchRipple
+                                                        disableFocusRipple
+                                                        style={{
+                                                            color: accentGreen,
+                                                        }}
+                                                    />
+                                                }
+                                                label={artist}
+                                                checked={
+                                                    filteredArtists[artist]
+                                                }
+                                                onChange={() =>
+                                                    handleFilterChange(
+                                                        "artistCheckbox",
+                                                        artist
+                                                    )
+                                                }
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </Collapse>
+                        </div>
+                        <Divider
+                            variant="middle"
+                            flexItem
+                            sx={{
+                                marginTop: 2,
+                                background: "#e2e2e2",
+                            }}
+                        />
                         <div className={"filterText"}>
                             <div
                                 className={"filter"}
@@ -614,7 +717,7 @@ function Results() {
                                                         alignItems: "center",
                                                         lineHeight: 1,
                                                         fontFamily:
-                                                            "Nunito-Bold",
+                                                            "Circular-Std",
                                                         color: lightColor,
                                                     }}
                                                 >
@@ -624,7 +727,7 @@ function Results() {
                                             style: {
                                                 height: 30,
                                                 fontSize: 16,
-                                                fontFamily: "Nunito-Light",
+                                                fontFamily: "Circular-Std",
                                             },
                                         }}
                                     />
@@ -688,7 +791,7 @@ function Results() {
                                                         alignItems: "center",
                                                         lineHeight: 1,
                                                         fontFamily:
-                                                            "Nunito-Bold",
+                                                            "Circular-Std",
                                                         color: lightColor,
                                                     }}
                                                 >
@@ -698,7 +801,7 @@ function Results() {
                                             style: {
                                                 height: 30,
                                                 fontSize: 16,
-                                                fontFamily: "Nunito-Light",
+                                                fontFamily: "Circular-Std",
                                             },
                                         }}
                                     />
@@ -826,15 +929,16 @@ function Results() {
                                     <div
                                         key={currArtistName}
                                         style={{
-                                            fontFamily: "Nunito-Medium",
+                                            fontFamily: "Circular-Std",
                                             maxWidth: "100%",
                                             whiteSpace: "nowrap",
                                         }}
                                     >
                                         <div
                                             style={{
-                                                height: 25,
-                                                display: "inline-block",
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                alignItems: "center",
                                             }}
                                         >
                                             <span
@@ -844,8 +948,12 @@ function Results() {
                                             </span>
                                             <span
                                                 style={{
-                                                    color: accentGreen,
-                                                    fontSize: 20,
+                                                    backgroundColor:
+                                                        accentGreen,
+                                                    color: lightColor,
+                                                    fontSize: 12,
+                                                    padding: "4px 12px",
+                                                    borderRadius: 8,
                                                 }}
                                             >
                                                 {currArtistName in events
@@ -864,22 +972,31 @@ function Results() {
                                                     return (
                                                         <Card
                                                             key={index}
-                                                            name={e.name}
+                                                            // name={e.name}
+                                                            venue={
+                                                                e._embedded
+                                                                    .venues[0]
+                                                                    .name
+                                                            }
+                                                            time={
+                                                                e.dates.start
+                                                                    .localTime
+                                                            }
                                                             localDate={
                                                                 e.dates.start
                                                                     .localDate
                                                             }
-                                                            address={
-                                                                "address" in
-                                                                e._embedded
-                                                                    .venues[0]
-                                                                    ? e
-                                                                          ._embedded
-                                                                          .venues[0]
-                                                                          .address
-                                                                          .line1
-                                                                    : -1
-                                                            }
+                                                            // address={
+                                                            //     "address" in
+                                                            //     e._embedded
+                                                            //         .venues[0]
+                                                            //         ? e
+                                                            //               ._embedded
+                                                            //               .venues[0]
+                                                            //               .address
+                                                            //               .line1
+                                                            //         : -1
+                                                            // }
                                                             city={
                                                                 e._embedded
                                                                     .venues[0]
@@ -933,7 +1050,10 @@ function Results() {
                             })}
                     </div>
                 ) : (
-                    <div>hello</div>
+                    <div>
+                        We're sorry, we couldn't find any results for that
+                        playlist. Please try again.
+                    </div>
                 )}
             </div>
         </ThemeProvider>

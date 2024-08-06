@@ -18,15 +18,6 @@ input:focus {
     outline: none;
 }
 
-.image-transition {
-    opacity: 1;
-    transition: opacity 1.05s ease-in-out;
-}
-
-.hidden {
-    opacity: 0;
-}
-
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -55,24 +46,31 @@ input:focus {
 }
 
 @font-face {
-    font-family: "Nunito-Light";
-    src: local("Nunito-Light"),
-        url("./fonts/Nunito-Light.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Nunito-Medium";
-    src: local("Nunito-Medium"),
-        url("./fonts/Nunito-Medium.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Nunito-Bold";
-    src: local("Nunito-Bold"), url("./fonts/Nunito-Bold.ttf") format("truetype");
+    font-family: "Raleway-Light";
+    src: local("Raleway-Light"),
+        url("./fonts/Raleway-Light.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Raleway";
-    src: local("Raleway-SemiBold"),
+    src: local("Raleway-Regular"),
+        url("./fonts/Raleway-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Raleway-Semibold";
+    src: local("Raleway-Semibold"),
         url("./fonts/Raleway-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Raleway-Bold";
+    src: local("Raleway-Bold"),
+        url("./fonts/Raleway-Bold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Circular-Std";
+    src: local("Circular-Std"),
+        url("./fonts/Circular-Std.ttf") format("truetype");
 }

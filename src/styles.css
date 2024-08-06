@@ -1,5 +1,6 @@
 :root {
-    --darkColor: #121212;
+    --darkColor: #0d1014;
+    --mediumColor: #1b2024;
     --lightColor: #fefefe;
     --accentGreyLight: #e2e2e2;
     --accentGreyDark: #757575;
@@ -11,8 +12,8 @@
 .resultArtistName {
     color: var(--lightColor);
     font-size: 30px;
-    font-family: "Raleway";
-    margin: 12px;
+    font-family: Circular-Std;
+    margin: 0px 12px;
 }
 
 .concertCardInfo {
@@ -22,89 +23,67 @@
     display: flex;
     width: 100%;
     flex-wrap: wrap;
+    margin-bottom: 16px;
 }
 
 .concertCardContainer {
-    background-color: #161616;
+    background-color: var(--mediumColor);
     border: 1px solid var(--darkColor);
-    border-radius: 10px;
-    height: 80px;
-    width: 220px;
+    border-radius: 16px;
+    height: 140px;
+    width: 230px;
     margin: 12px;
-    padding: 10px;
+    padding: 16px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
+    justify-content: left;
     cursor: pointer;
     position: relative;
-    /* box-shadow: 0px 0px 20px var(--accentGreyLight); */
-    /* box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-        rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; */
-    /* box-shadow: rgba(255, 255, 255, 0.12) 0px 1px 3px,
-        rgba(255, 255, 255, 0.24) 0px 1px 2px; */
-    /* box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; */
+    box-shadow: 0 4px 8px -1px #000;
 }
 
 .concertCardContainer:hover {
-    /* background-color: #f2f0fd; */
     transition: background-color 1s;
-    background-color: #222222;
+    background-color: #262d33;
     transition: box-shadow 0.5s;
-    /* box-shadow: rgba(255, 255, 255, 0.16) 0px 3px 6px,
-        rgba(255, 255, 255, 0.23) 0px 3px 6px; */
-
-    /* box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
-        rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
 }
 
 .concertCardLocationText {
-    font-size: 18px;
-    font-family: "Nunito-Bold";
-    text-align: center;
-    line-height: 1em;
-    justify-self: center;
-    position: absolute;
-    width: 90%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 1em;
+    font-size: 24px;
+    font-family: Circular-Std;
     overflow: hidden;
+    padding-top: 14px;
+    padding-bottom: 10px;
 }
 
 .concertCardDateText {
     font-size: 22px;
-    font-family: "Nunito-Light";
+    font-family: SourceSerif4-Medium;
     text-align: center;
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
-.concertCardNameText {
-    font-size: 16px;
-    font-family: "Nunito-Light";
+.concertCardDetailText {
+    font-size: 14px;
+    font-family: Circular-Std;
     text-align: left;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    line-height: 1em;
-    height: 1em;
-    position: absolute;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     color: var(--accentGreyDark);
-    left: 15px;
-    bottom: 12.5px;
+    margin-top: 4px;
+    line-height: 14px;
 }
 
 .concertCardPriceText {
-    font-size: 16px;
+    font-size: 20px;
     color: var(--accentGreen);
-    font-family: "Nunito-Bold";
+    font-family: Circular-Std;
     position: absolute;
     right: 10px;
-    bottom: 10px;
+    top: 10px;
 }
 
 .imageTileContainer {
@@ -129,23 +108,18 @@
     background-color: var(--darkColor);
 }
 
-.loadingTimer {
-    font-family: "Nunito-Medium";
+/* .loadingTimer {
+    font-family: Raleway;
     font-size: 16px;
     color: var(--lightColor);
-    width: 400px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
     margin-top: 20px;
-}
+} */
 
 .loadingButtons {
-    width: 200px;
-    margin-top: 30px;
+    width: 270px;
+    margin-top: 60px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -159,17 +133,21 @@
 }
 
 .homeTitleText {
-    margin-top: 50px;
-    font-family: "SourceSerif4-Medium";
+    margin-top: 120px;
+    font-family: SourceSerif4-Medium;
     font-size: 160px;
     color: var(--lightColor);
 }
 
 .homeSubtitleText {
     font-size: 30px;
-    font-family: "Nunito-Light";
-    margin-top: 120px;
+    font-family: Circular-Std;
+    margin-top: 40px;
     color: var(--lightColor);
+}
+
+.homeInput {
+    margin-top: 80px;
 }
 
 .logoutButton {
@@ -193,38 +171,31 @@
 }
 
 .homeLoginText {
-    width: 396.8px;
-    height: 52.8px;
-    background-color: #f9f9ff;
-    margin-top: 175px;
+    width: 400px;
+    height: 56px;
+    color: var(--lightColor);
+    margin-top: 80px;
     border-radius: 10px;
-    border: 2px solid var(--accentGreen);
-    color: var(--accentGreen);
+    background-color: var(--accentGreen);
     cursor: pointer;
     text-align: center;
-    line-height: 52.8px;
     font-size: 24px;
-    font-family: "Raleway";
-}
-
-.homeLoginText:hover {
-    background-color: var(--accentGreen);
-    border: 2px solid var(--accentGreen);
-    color: var(--darkColor);
-    cursor: pointer;
-    transition: all 0.1s;
+    font-family: Circular-Std;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .homeSearchText {
-    font-family: "Raleway";
+    font-family: Circular-Std;
     font-size: 24px;
-    margin-top: 134px;
-    color: var(--accentGreen);
+    color: var(--lightColor);
 }
 
 .homeErrorText {
     margin-top: 6px;
-    font-family: "Nunito-Light";
+    font-family: Raleway-Light;
     font-size: 16px;
     color: var(--errorColor);
 }
@@ -242,14 +213,14 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #161616;
+    background-color: rgb(23, 23, 30);
 }
 
 .resultsTitle {
     height: 150px;
     width: 300px;
     color: var(--lightColor);
-    font-family: "SourceSerif4-Medium";
+    font-family: SourceSerif4-Medium;
     font-size: 48px;
     display: flex;
     justify-content: center;
@@ -260,7 +231,7 @@
 }
 
 .resultsFilterTitle {
-    font-family: "Raleway";
+    font-family: Circular-Std;
     width: 270px;
     font-size: 32px;
     padding-top: 30px;
@@ -270,7 +241,7 @@
 }
 
 .resultsFilterMenu {
-    font-family: "Nunito-Medium";
+    font-family: Circular-Std;
     width: 240px;
     font-size: 32px;
     padding-left: 30px;
@@ -291,6 +262,6 @@
 
 .filterText {
     font-size: 24px;
-    font-family: "Nunito-Light";
+    font-family: Circular-Std;
     margin-top: 20px;
 }

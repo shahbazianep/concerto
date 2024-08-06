@@ -2,18 +2,18 @@ import fx from "money";
 import { stateAbbreviations } from "../utils/states";
 import "../styles.css";
 import { conversionRates } from "../utils/conversionRates";
+import { Place, Schedule, WatchLater } from "@mui/icons-material";
 
 fx.base = "USD";
 fx.rates = conversionRates;
 
 export default function Card(props) {
-    function convertDate(localDate) {
-        const dateObj = new Date(localDate);
-
-        const month = dateObj.getMonth() + 1; // Adding 1 because months are zero-based (January is 0).
-        const day = dateObj.getDate() + 1;
-
-        return `${month}/${day}`;
+    function convertTime(localTime) {
+        let [hours, minutes] = localTime.split(":").map(Number);
+        const period = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12 || 12;
+        minutes = String(minutes).padStart(2, "0");
+        return `${hours}:${minutes} ${period}`;
     }
 
     function convertCurrency(originalPrice, currencyType) {
@@ -34,6 +34,8 @@ export default function Card(props) {
             ? ""
             : convertCurrency(props.prices[0].min, props.prices[0].currency);
 
+    const date = new Date(props.localDate);
+
     const stateAbbr = stateAbbreviations.hasOwnProperty(props.state)
         ? stateAbbreviations[props.state]
         : props.state;
@@ -45,20 +47,52 @@ export default function Card(props) {
                 window.open(props.url, "_blank");
             }}
         >
-            <span className={"concertCardDateText"}>
+            <div
+                style={{
+                    backgroundColor: "#5339f8",
+                    color: "#fefefe",
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                    padding: "6px 6px 2px 6px",
+                    fontSize: 12,
+                    width: 36,
+                    textAlign: "center",
+                }}
+            >
+                {date
+                    .toLocaleString("default", {
+                        month: "short",
+                    })
+                    .toUpperCase()}
+            </div>
+            <div
+                style={{
+                    backgroundColor: "#fefefe",
+                    color: "#0d1014",
+                    borderBottomLeftRadius: 8,
+                    borderBottomRightRadius: 8,
+                    padding: "0px 6px 2px 6px",
+                    fontSize: 20,
+                    width: 36,
+                    textAlign: "center",
+                }}
+            >
+                {String(date.getMonth() + 1).padStart(2, "0")}
+            </div>
+            {/* <span className={"concertCardDateText"}>
                 {convertDate(props.localDate)}
-            </span>
+            </span> */}
 
             <span className={"concertCardLocationText"}>
                 {props.city + ", " + stateAbbr}
             </span>
-            <div
-                className={"concertCardNameText"}
-                style={{
-                    width: 190 - price.length * 5,
-                }}
-            >
-                {props.name}
+            <div className={"concertCardDetailText"}>
+                <Place sx={{ fontSize: 16, marginRight: 1 }} />
+                {props.venue}
+            </div>
+            <div className={"concertCardDetailText"}>
+                <WatchLater sx={{ fontSize: 16, marginRight: 1 }} />
+                {convertTime(props.time)}
             </div>
             <div className={"concertCardPriceText"}>{price}</div>
         </div>

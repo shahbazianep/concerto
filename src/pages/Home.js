@@ -4,25 +4,18 @@ import axios from "axios";
 import Tile from "../components/Tile";
 // import ImageCarousel from "../components/ImageCarousel";
 
-import DominicFike from "../images/DominicFike.jpg";
-import Drake from "../images/Drake.jpg";
-import Confetti from "../images/Confetti.jpg";
-import DuaLipa from "../images/DuaLipa.avif";
-import Lasers from "../images/Lasers.jpg";
-import LizzyMcalpine from "../images/LizzyMcalpine.jpg";
-import Rave from "../images/Rave.webp";
-import WestonEstate from "../images/WestonEstate.jpg";
-import SZA from "../images/SZA.webp";
-import OliviaRodrigo from "../images/OliviaRodrigo.jpg";
-import Weeknd from "../images/Weeknd.webp";
-
 import "../App.css";
 import "../styles.css";
-import "../fonts/Nunito-Medium.ttf";
-import "../fonts/Nunito-Light.ttf";
-import "../fonts/Nunito-ExtraLight.ttf";
 import { Navigate } from "react-router";
-import { Logout, PlayArrow, SkipPrevious, SkipNext } from "@mui/icons-material";
+import {
+    Logout,
+    PlayArrow,
+    SkipPrevious,
+    SkipNext,
+    FastRewindRounded,
+    FastForwardRounded,
+    PauseRounded,
+} from "@mui/icons-material";
 import {
     Button,
     ButtonBase,
@@ -35,6 +28,7 @@ import { StyledEngineProvider } from "@mui/material/styles";
 import ImageRotator from "../components/ImageRotator";
 
 import { TICKETMASTER_KEY, CLIENT_ID } from "../keys.js";
+import anime from "animejs";
 
 const REDIRECT_URI = "http://localhost:3000";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -47,9 +41,34 @@ function importAll(r) {
     });
     return images;
 }
-const images = importAll(
-    require.context("../images/albumcovers", false, /\.(png|jpe?g|svg)$/)
+
+const tiles = importAll(
+    require.context("../images/tiles", false, /\.(png|jpe?g|svg)$/)
 );
+
+function getRandomIndices(num) {
+    const numbers = Array.from({ length: num }, (_, i) => i);
+
+    for (let i = numbers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+    }
+
+    return numbers;
+}
+
+const centerCoords = [
+    [-1, 1],
+    [0, 0],
+    [1, -1],
+    [1, 1],
+    [2, 0],
+    [2, 2],
+    [3, 1],
+    [3, 3],
+    // [-1, -1],
+    // [3, -1],
+];
 
 class Home extends Component {
     constructor(props) {
@@ -68,7 +87,12 @@ class Home extends Component {
             counter: 1,
             sliderValue: 0,
             randomTime: this.generateRandomTime(),
+            imageSources: getRandomIndices(30)
+                .slice(0, centerCoords.length)
+                .map((randIndex) => tiles[`${randIndex}.png`]),
+            lastChangedTiles: [-1, -1],
         };
+        this.firstAccess = true;
     }
 
     searchPlaylist = async (e) => {
@@ -216,6 +240,8 @@ class Home extends Component {
         const hash = window.location.hash;
         let token = window.localStorage.getItem("token");
         let tokenIssuedTime = window.localStorage.getItem("tokenIssuedTime");
+        const currentTime = new Date().getTime();
+        const hourInMs = 60 * 60 * 1000;
 
         if (!token && hash) {
             token = hash
@@ -233,8 +259,6 @@ class Home extends Component {
         }
 
         if (tokenIssuedTime) {
-            const currentTime = new Date().getTime();
-            const hourInMs = 60 * 60 * 1000;
             if (currentTime - parseInt(tokenIssuedTime) > hourInMs) {
                 window.localStorage.removeItem("token");
                 window.localStorage.removeItem("tokenIssuedTime");
@@ -247,7 +271,49 @@ class Home extends Component {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
-        this.setState({ randomArray: array, token: token, tokenIssuedTime });
+
+        this.setState({
+            randomArray: array,
+            token: token,
+            tokenIssuedTime: currentTime,
+        });
+    }
+
+    componentDidUpdate() {
+        if (this.firstAccess) {
+            [
+                "#tile0",
+                "#tile1",
+                "#tile2",
+                "#tile3",
+                "#tile4",
+                "#tile5",
+                "#tile6",
+                "#tile7",
+            ].forEach((tile) => {
+                anime({
+                    targets: tile,
+                    opacity: [0, 1],
+                    easing: "easeInOutExpo",
+                    delay: Math.floor(Math.random() * 1000) + 500,
+                });
+            });
+            setTimeout(() => {
+                this.startInterval();
+            }, 2000);
+            this.firstAccess = false;
+        }
+    }
+
+    startInterval() {
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+        this.interval = setInterval(this.changeTile, 3000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     logout = () => {
@@ -295,49 +361,103 @@ class Home extends Component {
         ];
     };
 
+    changeTile = () => {
+        if (document.hidden) {
+            return;
+        }
+        let randIndex = Math.floor(Math.random() * centerCoords.length);
+        while (this.state.lastChangedTiles.includes(randIndex)) {
+            randIndex = Math.floor(Math.random() * centerCoords.length);
+        }
+        let randImage = `${Math.floor(Math.random() * 30)}.png`;
+        let oldSources = [...this.state.imageSources];
+        while (oldSources.includes(tiles[randImage])) {
+            randImage = `${Math.floor(Math.random() * 30)}.png`;
+        }
+        oldSources[randIndex] = tiles[randImage];
+        setTimeout(
+            () =>
+                this.setState({
+                    imageSources: oldSources,
+                    lastChangedTiles: [
+                        this.state.lastChangedTiles[1],
+                        randIndex,
+                    ],
+                }),
+            1500
+        );
+        anime({
+            targets: `#tile${randIndex}`,
+            keyframes: [{ opacity: 0 }, { opacity: 1 }],
+            duration: 3000,
+            easing: "easeInOutExpo",
+        });
+    };
+
     render() {
         if (this.state.reqPending) {
             return (
                 <div className={"loadingBackground"}>
-                    <ImageRotator images={images} interval={5000} />
-                    <div className={"loadingTimer"}>
-                        {
-                            this.getSongTime(
-                                ((this.state.counter - 1) * 100) /
-                                    Object.keys(this.state.artists).length -
-                                    1
-                            )[0]
-                        }
-                        <LinearProgress
-                            value={
-                                ((this.state.counter - 1) * 100) /
-                                    Object.keys(this.state.artists).length -
-                                1
-                            }
-                            variant="determinate"
-                            sx={{
-                                height: 6,
-                                width: 300,
-                                borderRadius: 3,
-                                backgroundColor: "rgba(31, 31, 31, 0.5)",
-                                "& .MuiLinearProgress-bar1Determinate": {
-                                    backgroundColor: "#1f1f1f",
-                                    borderRadius: 3,
-                                },
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            position: "relative",
+                            backgroundColor: "#2A2A2C",
+                            borderRadius: 20,
+                            boxShadow: "0 0 20px 0.5px #bbb",
+                            padding: 20,
+                        }}
+                    >
+                        {this.props.children}
+                        <div
+                            style={{
+                                position: "absolute",
+                                left: 322,
+                                top: 160,
+                                width: 270,
                             }}
-                        />
-                        {
-                            this.getSongTime(
-                                ((this.state.counter - 1) * 100) /
-                                    Object.keys(this.state.artists).length -
-                                    1
-                            )[1]
-                        }
-                    </div>
-                    <div className={"loadingButtons"}>
-                        <SkipPrevious sx={{ color: "#5339f8", fontSize: 36 }} />
-                        <PlayArrow sx={{ color: "#5339f8", fontSize: 48 }} />
-                        <SkipNext sx={{ color: "#5339f8", fontSize: 36 }} />
+                        >
+                            <div className={"loadingTimer"}>
+                                {/* {
+                                    this.getSongTime(
+                                        ((this.state.counter - 1) * 100) /
+                                            Object.keys(this.state.artists)
+                                                .length -
+                                            1
+                                    )[0]
+                                } */}
+                                <LinearProgress
+                                    value={
+                                        ((this.state.counter - 1) * 100) /
+                                            Object.keys(this.state.artists)
+                                                .length -
+                                        1
+                                    }
+                                    variant="determinate"
+                                    sx={{
+                                        height: 6,
+                                        width: 268,
+                                        borderRadius: 3,
+                                        backgroundColor:
+                                            "rgba(254, 254, 254, 0.5)",
+                                        "& .MuiLinearProgress-bar1Determinate":
+                                            {
+                                                backgroundColor: "#fefefe",
+                                                borderRadius: 3,
+                                            },
+                                    }}
+                                />
+                                {/* {
+                                    this.getSongTime(
+                                        ((this.state.counter - 1) * 100) /
+                                            Object.keys(this.state.artists)
+                                                .length -
+                                            1
+                                    )[1]
+                                } */}
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
@@ -361,16 +481,6 @@ class Home extends Component {
                     ) : (
                         <IconButton
                             className={"logoutButton"}
-                            // style={{
-                            //     padding: 10,
-                            //     borderRadius: 50,
-                            //     backgroundColor: "#fefefe",
-                            //     border: "2px solid #5339f8",
-                            //     cursor: "pointer",
-                            //     position: "absolute",
-                            //     left: 20,
-                            //     top: 20,
-                            // }}
                             onClick={this.logout}
                             disableRipple
                         >
@@ -393,11 +503,7 @@ class Home extends Component {
                             Log in to Spotify
                         </div>
                     ) : (
-                        <div>
-                            <div className={"homeSearchText"}>
-                                Spotify Link:
-                            </div>
-
+                        <div className={"homeInput"}>
                             <TextField
                                 value={this.state.searchKey}
                                 onChange={(event) => {
@@ -407,21 +513,25 @@ class Home extends Component {
                                     });
                                 }}
                                 variant="outlined"
+                                placeholder="Paste your Spotify playlist link here"
                                 sx={{
-                                    marginTop: 1,
                                     backgroundColor: "transparent",
                                     width: "400px",
+                                    fontFamily: "Circular-Std",
                                     "& .MuiOutlinedInput-root": {
                                         "& > fieldset": {
-                                            borderColor: "#5339f8",
+                                            borderColor: "#fefefe",
                                             borderWidth: "2px",
                                         },
                                         "&:hover fieldset": {
-                                            borderColor: "#5339f8",
+                                            borderColor: "#fefefe",
                                         },
                                         "&.Mui-focused fieldset": {
-                                            borderColor: "#5339f8",
+                                            borderColor: "#fefefe",
                                         },
+                                        backgroundColor: "transparent",
+                                        fontFamily: "Circular-Std",
+                                        color: "#fefefe",
                                     },
                                 }}
                                 inputProps={{ autoComplete: "off" }}
@@ -448,70 +558,23 @@ class Home extends Component {
                                     },
                                 }}
                             />
-                            {this.state.searchError ? (
+                            {this.state.searchError && (
                                 <div className={"homeErrorText"}>
                                     Invalid search. Please try again
                                 </div>
-                            ) : (
-                                <></>
                             )}
                         </div>
                     )}
-                    <Tile image={DominicFike} coords={[0, 0]} zoom={"180%"} />
-                    <Tile image={Drake} coords={[1, 1]} zoom={"215%"} />
-                    <Tile
-                        image={OliviaRodrigo}
-                        coords={[2, 0]}
-                        zoom={"280%"}
-                        shift={80}
-                    />
-                    <Tile
-                        image={Rave}
-                        coords={[3, 1]}
-                        zoom={"170%"}
-                        shiftTop={-100}
-                        shift={-100}
-                    />
-                    <Tile
-                        image={Confetti}
-                        coords={[3, -1]}
-                        zoom={"170%"}
-                        shiftTop={-150}
-                        shift={-50}
-                    />
-                    <Tile
-                        image={Lasers}
-                        coords={[-1, -1]}
-                        zoom={"350%"}
-                        shift={100}
-                    />
-                    <Tile
-                        image={WestonEstate}
-                        coords={[-1, 1]}
-                        zoom={"160%"}
-                        shiftTop={80}
-                    />
-                    <Tile
-                        image={DuaLipa}
-                        coords={[1, -1]}
-                        zoom={"220%"}
-                        shiftTop={-120}
-                        shift={140}
-                    />
-                    <Tile
-                        image={SZA}
-                        coords={[2, 2]}
-                        zoom={"220%"}
-                        shift={-150}
-                        shiftTop={100}
-                    />
-                    <Tile
-                        image={Weeknd}
-                        coords={[3, 3]}
-                        zoom={"220%"}
-                        shift={-50}
-                        shiftTop={-50}
-                    />
+                    {this.state.imageSources.map((src, index) => {
+                        return (
+                            <Tile
+                                image={src}
+                                coords={centerCoords[index]}
+                                key={index}
+                                id={`tile${index}`}
+                            />
+                        );
+                    })}
                 </div>
             </StyledEngineProvider>
         );

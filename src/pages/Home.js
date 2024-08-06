@@ -17,7 +17,7 @@ import { StyledEngineProvider } from "@mui/material/styles";
 
 import anime from "animejs";
 
-const REDIRECT_URI = "http://localhost:3000";
+const REDIRECT_URI = "https://concerto-phi.vercel.app/";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 

@@ -162,13 +162,13 @@
     margin-top: 30px;
 }
 
-.logoutButton:hover {
+/* .logoutButton:hover {
     background-color: var(--accentGreen);
     border: 2px solid var(--accentGreen);
     color: var(--darkColor);
     cursor: pointer;
     transition: all 0.1s;
-}
+} */
 
 .homeLoginText {
     width: 400px;

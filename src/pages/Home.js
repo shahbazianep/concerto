@@ -6,13 +6,8 @@ import Tile from "../components/Tile";
 import "../App.css";
 import "../styles.css";
 import { Navigate } from "react-router";
-import { Logout, PlayArrow } from "@mui/icons-material";
-import {
-    IconButton,
-    InputAdornment,
-    LinearProgress,
-    TextField,
-} from "@mui/material";
+import { PlayArrow } from "@mui/icons-material";
+import { InputAdornment, LinearProgress, TextField } from "@mui/material";
 import { StyledEngineProvider } from "@mui/material/styles";
 
 import anime from "animejs";

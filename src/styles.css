@@ -151,15 +151,15 @@
 }
 
 .logoutButton {
-    padding: 10px;
-    border-radius: 50px;
-    background-color: var(--darkColor);
-    border: 2px solid var(--accentGreen);
-    color: var(--accentGreen);
+    font-family: Circular-Std;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: var(--accentGreen);
+    color: var(--lightColor);
     cursor: pointer;
-    position: absolute;
-    left: 20px;
-    top: 20px;
+    width: min-content;
+    text-wrap: nowrap;
+    margin-top: 30px;
 }
 
 .logoutButton:hover {

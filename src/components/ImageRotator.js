@@ -58,6 +58,7 @@ function getRandomSongDetails(c, randomIndex) {
 }
 
 const ImageRotator = ({ images }) => {
+    anime.suspendWhenDocumentHidden = false;
     const [currentImageIndex, setCurrentImageIndex] = useState(1);
     const [randomIndex, setRandomIndex] = useState(0);
     const [currentImageSource, setCurrentImageSource] = useState(
@@ -69,6 +70,9 @@ const ImageRotator = ({ images }) => {
     }, [currentImageIndex, images]);
 
     const changeAlbum = () => {
+        if (document.hidden) {
+            return;
+        }
         setTimeout(() => {
             setRandomIndex(Math.floor(Math.random() * 3));
             setCurrentImageIndex((prevIndex) => prevIndex + 1);
@@ -80,6 +84,7 @@ const ImageRotator = ({ images }) => {
                 { opacity: 1, easing: "easeInOutCubic" },
             ],
             duration: 4000,
+            suspendWhenDocumentHidden: true,
         });
     };
 

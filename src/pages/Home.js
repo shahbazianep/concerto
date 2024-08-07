@@ -464,22 +464,10 @@ class Home extends Component {
         return (
             <StyledEngineProvider injectFirst>
                 <div className={"homeBackground"}>
-                    {!this.state.token ? (
-                        <></>
-                    ) : (
-                        <IconButton
-                            className={"logoutButton"}
-                            onClick={this.logout}
-                            disableRipple
-                        >
-                            <Logout />
-                        </IconButton>
-                    )}
                     <div className={"homeTitleText"}>concerto</div>
-
                     <div className={"homeSubtitleText"}>
-                        Find concerts and events for all your <br /> favorite
-                        artists in one search
+                        Discover concerts and events for all your <br />{" "}
+                        favorite artists in one search
                     </div>
                     {!this.state.token ? (
                         <div
@@ -557,11 +545,23 @@ class Home extends Component {
                                     }}
                                 />
                             </form>
-                            {this.state.searchError && (
-                                <div className={"homeErrorText"}>
+                            {
+                                <div
+                                    className={"homeErrorText"}
+                                    style={{
+                                        visibility: !this.state.searchError
+                                            ? "hidden"
+                                            : "",
+                                    }}
+                                >
                                     Invalid search. Please try again
                                 </div>
-                            )}
+                            }
+                        </div>
+                    )}
+                    {this.state.token && (
+                        <div className={"logoutButton"} onClick={this.logout}>
+                            Log Out
                         </div>
                     )}
                     {this.state.imageSources.map((src, index) => {

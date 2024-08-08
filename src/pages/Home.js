@@ -132,80 +132,164 @@ class Home extends Component {
 
     searchConcerts = async () => {
         const artistNames = Object.values(this.state.artists);
+        console.log(artistNames);
         let events = {};
+        let retries = 5;
 
         for (let i = 0; i < artistNames.length; i++) {
-            const artistName = artistNames[i].name;
-            const artistUrl = artistNames[i].href;
-            const delay = 500; // Introduce a delay based on index
-
             this.setState({
                 counter: this.state.counter + 1,
             });
+            for (let j = 0; j < retries; j++) {
+                const artistName = artistNames[i].name;
+                const artistUrl = artistNames[i].href;
+                const delay = 100;
+                try {
+                    console.log("ATTEMPT #" + (j + 1) + " for " + artistName);
+                    await new Promise((resolve) => setTimeout(resolve, delay));
+                    // const concerts = await axios.get(
+                    //     `https://app.ticketmaster.com/discovery/v2/events?`,
+                    //     {
+                    //         params: {
+                    //             keyword: artistName,
+                    //             apikey: process.env.REACT_APP_TICKETMASTER_KEY,
+                    //             size: 50,
+                    //         },
+                    //     }
+                    // );
 
-            try {
-                await new Promise((resolve) => setTimeout(resolve, delay));
+                    // console.log(concerts.data);
+                    // events[artistName] = [];
 
-                const response = await axios.get(
-                    `https://app.ticketmaster.com/discovery/v2/attractions?apikey=${process.env.REACT_APP_TICKETMASTER_KEY}&keyword=${artistName}&locale=*`
-                );
-
-                let attractionIndex = 0;
-                let urlMatchError = false;
-                let attractions = response.data._embedded.attractions;
-                if (attractions.length === 1) {
-                    if (
-                        attractions[0].name.toLowerCase() !==
-                        artistName.toLowerCase()
-                    ) {
-                        urlMatchError = true;
-                    }
-                } else {
-                    while (attractionIndex < attractions.length) {
-                        if (
-                            "externalLinks" in attractions[attractionIndex] &&
-                            "spotify" in
-                                attractions[attractionIndex].externalLinks
-                        ) {
-                            let spotifyUrl =
-                                attractions[attractionIndex].externalLinks
-                                    .spotify[0].url;
-                            if (spotifyUrl === artistUrl) {
-                                break;
-                            }
-                        } else if (
-                            attractions[attractionIndex].name === artistName
-                        ) {
-                            break;
+                    // if ("_embedded" in concerts.data) {
+                    //     for (
+                    //         let i = 0;
+                    //         i < concerts.data._embedded.events.length;
+                    //         i++
+                    //     ) {
+                    //         if ("_embedded" in concerts.data._embedded.events[i]) {
+                    //             for (
+                    //                 let j = 0;
+                    //                 j <
+                    //                 concerts.data._embedded.events[i]._embedded
+                    //                     .attractions.length;
+                    //                 j++
+                    //             ) {
+                    //                 if (
+                    //                     concerts.data._embedded.events[i]._embedded
+                    //                         .attractions[j].name === artistName
+                    //                 ) {
+                    //                     events[artistName].push(
+                    //                         concerts.data._embedded.events[i]
+                    //                     );
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
+                    //     // events[artistName] = concerts.data._embedded.events;
+                    //     console.log(events[artistName]);
+                    // }
+                    const response = await axios.get(
+                        `https://app.ticketmaster.com/discovery/v2/attractions`,
+                        {
+                            params: {
+                                apikey: process.env.REACT_APP_TICKETMASTER_KEY,
+                                keyword: artistName,
+                                locale: "*",
+                            },
                         }
-                        attractionIndex += 1;
-                        if (attractionIndex >= attractions.length) {
-                            urlMatchError = true;
-                        }
-                    }
-                }
-
-                if (urlMatchError === true) {
-                    console.log("URL matching error for " + artistName);
-                }
-
-                if ("_embedded" in response.data && urlMatchError === false) {
-                    const concerts = await axios.get(
-                        `https://app.ticketmaster.com/discovery/v2/events?apikey=${process.env.REACT_APP_TICKETMASTER_KEY}&attractionId=${attractions[attractionIndex].id}&locale=*`
                     );
 
-                    if (
-                        "_embedded" in concerts.data &&
-                        concerts.data._embedded.events[0]._embedded
-                            .attractions[0].id ===
-                            attractions[attractionIndex].id
-                    ) {
-                        events[artistName] = concerts.data._embedded.events;
-                        console.log(events[artistName]);
+                    let attractionIndex = 0;
+                    let urlMatchError = false;
+                    let attractions = response.data._embedded?.attractions;
+                    if (attractions?.length === 1) {
+                        if (
+                            attractions[0].name
+                                .toLowerCase()
+                                .normalize("NFD")
+                                .replace(/[\u0300-\u036f]/g, "") !==
+                            artistName
+                                .toLowerCase()
+                                .normalize("NFD")
+                                .replace(/[\u0300-\u036f]/g, "")
+                        ) {
+                            urlMatchError = true;
+                            console.log("Name match error");
+                        }
+                    } else {
+                        while (attractionIndex < attractions?.length) {
+                            if (
+                                "externalLinks" in
+                                    attractions[attractionIndex] &&
+                                "spotify" in
+                                    attractions[attractionIndex]
+                                        .externalLinks &&
+                                attractions[attractionIndex].externalLinks
+                                    .spotify[0].url === artistUrl
+                            ) {
+                                break;
+                            } else if (
+                                attractions[attractionIndex].name
+                                    .toLowerCase()
+                                    .normalize("NFD")
+                                    .replace(/[\u0300-\u036f]/g, "") ===
+                                artistName
+                                    .toLowerCase()
+                                    .normalize("NFD")
+                                    .replace(/[\u0300-\u036f]/g, "")
+                            ) {
+                                break;
+                            }
+                            attractionIndex += 1;
+                            if (attractionIndex >= attractions.length) {
+                                urlMatchError = true;
+                            }
+                        }
                     }
+
+                    if (urlMatchError === true) {
+                        console.log("URL matching error for " + artistName);
+                        break;
+                    }
+
+                    if ("_embedded" in response.data) {
+                        const concerts = await axios.get(
+                            `https://app.ticketmaster.com/discovery/v2/events?`,
+                            {
+                                params: {
+                                    apikey: process.env
+                                        .REACT_APP_TICKETMASTER_KEY,
+                                    attractionId:
+                                        attractions[attractionIndex].id,
+                                    locale: "*",
+                                    size: 100,
+                                },
+                            }
+                        );
+
+                        if (
+                            "_embedded" in concerts.data &&
+                            concerts.data._embedded.events[0]._embedded
+                                .attractions[0].id ===
+                                attractions[attractionIndex].id
+                        ) {
+                            events[artistName] = concerts.data._embedded.events;
+                            console.log(events[artistName]);
+                            break;
+                        }
+                    }
+                    break;
+                } catch {
+                    console.warn(
+                        `Retrying ${artistName} due to 429 error code: Attempt ${
+                            j + 1
+                        }`
+                    );
+                    await new Promise((resolve) =>
+                        setTimeout(resolve, 1000 * Math.pow(2, j))
+                    );
                 }
-            } catch (error) {
-                console.error(`An error occurred for ${artistName}:`, error);
             }
         }
 

@@ -12,10 +12,12 @@ import { StyledEngineProvider } from "@mui/material/styles";
 
 import anime from "animejs";
 
-const REDIRECT_URI = "https://concerto-phi.vercel.app/";
+const REDIRECT_URI = "http://localhost:3000";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPES = "playlist-read-private playlist-read-collaborative";
+
+const isSmallScreen = window.matchMedia("(max-width: 767px)").matches;
 
 function importAll(r) {
 	let images = {};
@@ -527,7 +529,9 @@ class Home extends Component {
 										placeholder="Paste your Spotify playlist link here"
 										sx={{
 											backgroundColor: "transparent",
-											width: "400px",
+											width: isSmallScreen
+												? "300px"
+												: "400px",
 											fontFamily: "Circular-Std",
 											"& .MuiOutlinedInput-root": {
 												"& > fieldset": {

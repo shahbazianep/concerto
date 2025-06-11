@@ -50,10 +50,10 @@
 }
 
 .concertCardLocationText {
-	font-size: 24px;
+	font-size: 20px;
 	font-family: Circular-Std;
 	overflow: hidden;
-	padding-top: 14px;
+	padding-top: 4px;
 	padding-bottom: 10px;
 }
 
@@ -73,8 +73,9 @@
 	flex-direction: row;
 	align-items: center;
 	color: var(--accentGreyDark);
-	margin-top: 4px;
+	margin-top: 2px;
 	line-height: 14px;
+	flex-shrink: 0;
 }
 
 .concertCardPriceText {
@@ -169,6 +170,8 @@
 	width: min-content;
 	text-wrap: nowrap;
 	margin-top: 30px;
+	margin-left: 10px;
+	z-index: 1;
 }
 
 /* .logoutButton:hover {
@@ -195,6 +198,10 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.homeInput {
+	margin-top: 80px;
 }
 
 .homeSearchText {
@@ -242,7 +249,7 @@
 
 .resultsFilterTitle {
 	font-family: Circular-Std;
-	width: 270px;
+	width: 100%;
 	font-size: 32px;
 	padding-top: 30px;
 	padding-left: 30px;
@@ -252,13 +259,19 @@
 
 .resultsFilterMenu {
 	font-family: Circular-Std;
-	width: 240px;
+	width: 100%;
 	font-size: 32px;
 	padding-left: 30px;
 	padding-right: 30px;
 	overflow-y: scroll;
 	height: 100%;
 	border-right: 1px solid var(--accentGreyLight);
+}
+
+.resultsContainer {
+	padding-top: 40px;
+	padding-left: 40px;
+	overflow-y: scroll;
 }
 
 .filter {
@@ -346,6 +359,7 @@
 	.homeSubtitleText {
 		font-size: 18px;
 		text-align: center;
+		margin-top: 20px;
 	}
 
 	.homeContent {
@@ -363,16 +377,20 @@
 		margin-top: 40px;
 	}
 
-	.logoutButton {
+	.homeInput {
+		margin-top: 20px;
+	}
+
+	/* .logoutButton {
 		padding: 8px 14px;
 		font-size: 16px;
 		margin-top: 20px;
-	}
+	} */
 
 	.resultsSidebar {
 		width: 100vw;
 		height: auto;
-		flex-direction: row;
+		flex-direction: column;
 		overflow-x: auto;
 	}
 
@@ -395,6 +413,13 @@
 	.resultsBackground {
 		flex-direction: column;
 		height: auto;
+	}
+
+	.resultsContainer {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.filterText {

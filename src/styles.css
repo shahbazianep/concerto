@@ -1,165 +1,174 @@
 :root {
-    --darkColor: #0d1014;
-    --mediumColor: #1b2024;
-    --lightColor: #fefefe;
-    --accentGreyLight: #e2e2e2;
-    --accentGreyDark: #757575;
-    /* --accentGreen: #0ae060; */
-    --accentGreen: #5339f8;
-    --errorColor: #ef4a4a;
+	--darkColor: #0d1014;
+	--mediumColor: #1b2024;
+	--lightColor: #fefefe;
+	--accentGreyLight: #e2e2e2;
+	--accentGreyDark: #757575;
+	/* --accentGreen: #0ae060; */
+	--accentGreen: #5339f8;
+	--errorColor: #ef4a4a;
 }
 
 .resultArtistName {
-    color: var(--lightColor);
-    font-size: 30px;
-    font-family: Circular-Std;
-    margin: 0px 12px;
+	color: var(--lightColor);
+	font-size: 30px;
+	font-family: Circular-Std;
+	margin: 0px 12px;
 }
 
 .concertCardInfo {
-    color: var(--lightColor);
-    flex-direction: row;
-    align-items: center;
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
+	color: var(--lightColor);
+	flex-direction: row;
+	align-items: center;
+	display: flex;
+	width: 100%;
+	flex-wrap: wrap;
+	margin-bottom: 16px;
 }
 
 .concertCardContainer {
-    background-color: var(--mediumColor);
-    border: 1px solid var(--darkColor);
-    border-radius: 16px;
-    height: 140px;
-    width: 230px;
-    margin: 12px;
-    padding: 16px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    cursor: pointer;
-    position: relative;
-    box-shadow: 0 4px 8px -1px #000;
+	background-color: var(--mediumColor);
+	border: 1px solid var(--darkColor);
+	border-radius: 16px;
+	height: 140px;
+	width: 230px;
+	margin: 12px;
+	padding: 16px;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: left;
+	cursor: pointer;
+	position: relative;
+	box-shadow: 0 4px 8px -1px #000;
 }
 
 .concertCardContainer:hover {
-    transition: background-color 1s;
-    background-color: #262d33;
-    transition: box-shadow 0.5s;
+	transition: background-color 1s;
+	background-color: #262d33;
+	transition: box-shadow 0.5s;
 }
 
 .concertCardLocationText {
-    font-size: 24px;
-    font-family: Circular-Std;
-    overflow: hidden;
-    padding-top: 14px;
-    padding-bottom: 10px;
+	font-size: 24px;
+	font-family: Circular-Std;
+	overflow: hidden;
+	padding-top: 14px;
+	padding-bottom: 10px;
 }
 
 .concertCardDateText {
-    font-size: 22px;
-    font-family: SourceSerif4-Medium;
-    text-align: center;
+	font-size: 22px;
+	font-family: SourceSerif4-Medium;
+	text-align: center;
 }
 
 .concertCardDetailText {
-    font-size: 14px;
-    font-family: Circular-Std;
-    text-align: left;
-    text-overflow: ellipsis;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    color: var(--accentGreyDark);
-    margin-top: 4px;
-    line-height: 14px;
+	font-size: 14px;
+	font-family: Circular-Std;
+	text-align: left;
+	text-overflow: ellipsis;
+	overflow-x: hidden;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	color: var(--accentGreyDark);
+	margin-top: 4px;
+	line-height: 14px;
 }
 
 .concertCardPriceText {
-    font-size: 20px;
-    color: var(--accentGreen);
-    font-family: Circular-Std;
-    position: absolute;
-    right: 10px;
-    top: 10px;
+	font-size: 20px;
+	color: var(--accentGreen);
+	font-family: Circular-Std;
+	position: absolute;
+	right: 10px;
+	top: 10px;
 }
 
 .imageTileContainer {
-    background-color: transparent;
-    height: 36vh;
-    width: 36vh;
-    transform: rotate(45deg);
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    border-radius: 5px;
+	background-color: transparent;
+	z-index: 0;
+	height: 36vh;
+	width: 36vh;
+	transform: rotate(45deg);
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+	border-radius: 5px;
 }
 
 .loadingBackground {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    justify-content: center;
-    background-color: var(--darkColor);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100vh;
+	justify-content: center;
+	background-color: var(--darkColor);
+}
+.loadingContent {
+	display: flex;
+	flex-direction: row;
+	position: relative;
+	background-color: #2a2a2c;
+	border-radius: 20px;
+	box-shadow: 0 0 20px 0.5px #bbb;
+	padding: 20px;
 }
 
-/* .loadingTimer {
-    font-family: Raleway;
-    font-size: 16px;
-    color: var(--lightColor);
-    margin-top: 20px;
-} */
+.loadingTimer {
+	position: absolute;
+	left: 322px;
+	top: 160px;
+	width: 270px;
+}
 
 .loadingButtons {
-    width: 270px;
-    margin-top: 60px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+	width: 270px;
+	margin-top: 60px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 }
 
 .homeBackground {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--darkColor);
-    overflow-x: hidden;
-    height: 100vh;
-    padding-left: 100px;
+	display: flex;
+	flex-direction: column;
+	background-color: var(--darkColor);
+	overflow-x: hidden;
+	overflow-y: hidden;
+	width: 100vw;
+	height: 100vh;
+	padding: 100px;
+	justify-content: center;
+	box-sizing: border-box;
+	position: relative;
 }
 
 .homeTitleText {
-    margin-top: 120px;
-    font-family: SourceSerif4-Medium;
-    font-size: 160px;
-    color: var(--lightColor);
+	font-family: SourceSerif4-Medium;
+	font-size: 160px;
+	color: var(--lightColor);
 }
 
 .homeSubtitleText {
-    font-size: 30px;
-    font-family: Circular-Std;
-    margin-top: 40px;
-    color: var(--lightColor);
-}
-
-.homeInput {
-    margin-top: 80px;
+	font-size: 30px;
+	font-family: Circular-Std;
+	color: var(--lightColor);
 }
 
 .logoutButton {
-    font-family: Circular-Std;
-    padding: 10px 20px;
-    border-radius: 10px;
-    background-color: var(--accentGreen);
-    color: var(--lightColor);
-    cursor: pointer;
-    width: min-content;
-    text-wrap: nowrap;
-    margin-top: 30px;
+	font-family: Circular-Std;
+	padding: 10px 20px;
+	border-radius: 10px;
+	background-color: var(--accentGreen);
+	color: var(--lightColor);
+	cursor: pointer;
+	width: min-content;
+	text-wrap: nowrap;
+	margin-top: 30px;
 }
 
 /* .logoutButton:hover {
@@ -171,97 +180,225 @@
 } */
 
 .homeLoginText {
-    width: 400px;
-    height: 56px;
-    color: var(--lightColor);
-    margin-top: 80px;
-    border-radius: 10px;
-    background-color: var(--accentGreen);
-    cursor: pointer;
-    text-align: center;
-    font-size: 24px;
-    font-family: Circular-Std;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	width: 400px;
+	height: 56px;
+	/* flex-shrink: 0; */
+	color: var(--lightColor);
+	margin-top: 80px;
+	border-radius: 10px;
+	background-color: var(--accentGreen);
+	cursor: pointer;
+	text-align: center;
+	font-size: 24px;
+	font-family: Circular-Std;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .homeSearchText {
-    font-family: Circular-Std;
-    font-size: 24px;
-    color: var(--lightColor);
+	font-family: Circular-Std;
+	font-size: 24px;
+	color: var(--lightColor);
 }
 
 .homeErrorText {
-    margin-top: 6px;
-    font-family: Circular-Std;
-    font-size: 16px;
-    color: var(--errorColor);
+	margin-top: 6px;
+	font-family: Circular-Std;
+	font-size: 16px;
+	color: var(--errorColor);
 }
 
 .resultsBackground {
-    background-color: var(--darkColor);
-    height: 100vh;
-    display: flex;
-    width: 100vw;
-    flex-direction: row;
+	background-color: var(--darkColor);
+	height: 100vh;
+	display: flex;
+	width: 100vw;
+	flex-direction: row;
 }
 
 .resultsSidebar {
-    width: 300px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(23, 23, 30);
+	width: 300px;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(23, 23, 30);
 }
 
 .resultsTitle {
-    height: 150px;
-    width: 300px;
-    color: var(--lightColor);
-    font-family: SourceSerif4-Medium;
-    font-size: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border-right: 1px solid var(--accentGreyLight);
-    border-bottom: 1px solid var(--accentGreyLight);
+	height: 150px;
+	width: 300px;
+	color: var(--lightColor);
+	font-family: SourceSerif4-Medium;
+	font-size: 48px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	border-right: 1px solid var(--accentGreyLight);
+	border-bottom: 1px solid var(--accentGreyLight);
 }
 
 .resultsFilterTitle {
-    font-family: Circular-Std;
-    width: 270px;
-    font-size: 32px;
-    padding-top: 30px;
-    padding-left: 30px;
-    border-right: 1px solid var(--accentGreyLight);
-    color: var(--lightColor);
+	font-family: Circular-Std;
+	width: 270px;
+	font-size: 32px;
+	padding-top: 30px;
+	padding-left: 30px;
+	border-right: 1px solid var(--accentGreyLight);
+	color: var(--lightColor);
 }
 
 .resultsFilterMenu {
-    font-family: Circular-Std;
-    width: 240px;
-    font-size: 32px;
-    padding-left: 30px;
-    padding-right: 30px;
-    overflow-y: scroll;
-    height: 100%;
-    border-right: 1px solid var(--accentGreyLight);
+	font-family: Circular-Std;
+	width: 240px;
+	font-size: 32px;
+	padding-left: 30px;
+	padding-right: 30px;
+	overflow-y: scroll;
+	height: 100%;
+	border-right: 1px solid var(--accentGreyLight);
 }
 
 .filter {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--lightColor);
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	color: var(--lightColor);
 }
 
 .filterText {
-    font-size: 24px;
-    font-family: Circular-Std;
-    margin-top: 20px;
+	font-size: 24px;
+	font-family: Circular-Std;
+	margin-top: 20px;
+}
+
+.homeContent {
+	z-index: 1;
+	background-color: rgba(13, 16, 20, 0.7);
+	padding: 10px;
+	border-radius: 10px;
+	width: fit-content;
+	display: flex;
+	flex-direction: column;
+}
+
+.imageRotator {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+}
+
+.imageRotatorDetails {
+	display: flex;
+	flex-direction: column;
+	margin-top: 40px;
+	margin-left: 30px;
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+	.homeContent {
+		background-color: rgba(13, 16, 20, 0);
+	}
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1199px) {
+	.homeBackground {
+		align-items: center;
+	}
+	.homeContent {
+		align-items: center;
+	}
+}
+
+/* Small screens */
+@media (max-width: 767px) {
+	.imageRotator {
+		flex-direction: column;
+		align-items: center;
+	}
+	.imageRotatorDetails {
+		margin-left: 0px;
+	}
+	.loadingTimer {
+		left: 20px;
+		top: 440px;
+		transform: translateY(-300px);
+		animation: slideDown 1s ease-in-out 3s forwards;
+	}
+	.homeBackground {
+		padding: 20px;
+		height: auto;
+		width: 100vw;
+		min-height: 100vh;
+	}
+
+	.homeTitleText {
+		font-size: 48px;
+		text-align: center;
+	}
+
+	.homeSubtitleText {
+		font-size: 18px;
+		text-align: center;
+	}
+
+	.homeContent {
+		padding: 24px;
+		border-radius: 12px;
+		width: 100%;
+		align-items: center;
+	}
+
+	.homeLoginText {
+		width: 60vw;
+		max-width: 350px;
+		height: 48px;
+		font-size: 18px;
+		margin-top: 40px;
+	}
+
+	.logoutButton {
+		padding: 8px 14px;
+		font-size: 16px;
+		margin-top: 20px;
+	}
+
+	.resultsSidebar {
+		width: 100vw;
+		height: auto;
+		flex-direction: row;
+		overflow-x: auto;
+	}
+
+	.resultsTitle,
+	.resultsFilterTitle,
+	.resultsFilterMenu {
+		width: auto;
+		font-size: 20px;
+		padding: 10px;
+		border-right: none;
+		border-bottom: 1px solid var(--accentGreyLight);
+	}
+
+	.resultsTitle {
+		height: 60px;
+		width: 100vw;
+		font-size: 28px;
+	}
+
+	.resultsBackground {
+		flex-direction: column;
+		height: auto;
+	}
+
+	.filterText {
+		font-size: 16px;
+		margin-top: 10px;
+	}
 }

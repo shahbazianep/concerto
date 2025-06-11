@@ -1,76 +1,82 @@
-html {
-    max-height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: #d9d9d9;
+/* html {
+	max-height: 100vh;
+	overflow-y: hidden;
+	margin: 0;
+	padding: 0;
+	background-color: #d9d9d9;
 }
 
 body {
-    max-height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: #d9d9d9;
-    overflow-x: hidden;
-    overflow-y: hidden;
+	max-height: 100vh;
+	margin: 0;
+	padding: 0;
+	background-color: #d9d9d9;
+	overflow-x: hidden;
+	overflow-y: hidden;
+} */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 input:focus {
-    outline: none;
+	outline: none;
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-    opacity: 0;
-    background: transparent;
-    display: none;
+	width: 10px;
+	height: 10px;
+	opacity: 0;
+	background: transparent;
+	display: none;
 }
 ::-webkit-scrollbar:hover {
-    opacity: 1;
+	opacity: 1;
 }
 
 ::-webkit-scrollbar-thumb {
-    transition: background-color 4s;
-    background-color: transparent;
-    border-radius: 10px;
+	transition: background-color 4s;
+	background-color: transparent;
+	border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #e6fff0;
+	background-color: #e6fff0;
 }
 
 @font-face {
-    font-family: "SourceSerif4-Medium";
-    src: local("SourceSerif4-Medium"),
-        url("./fonts/SourceSerif4-Medium.ttf") format("truetype");
+	font-family: "SourceSerif4-Medium";
+	src: local("SourceSerif4-Medium"),
+		url("./fonts/SourceSerif4-Medium.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "Raleway-Light";
-    src: local("Raleway-Light"),
-        url("./fonts/Raleway-Light.ttf") format("truetype");
+	font-family: "Raleway-Light";
+	src: local("Raleway-Light"),
+		url("./fonts/Raleway-Light.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "Raleway";
-    src: local("Raleway-Regular"),
-        url("./fonts/Raleway-Regular.ttf") format("truetype");
+	font-family: "Raleway";
+	src: local("Raleway-Regular"),
+		url("./fonts/Raleway-Regular.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "Raleway-Semibold";
-    src: local("Raleway-Semibold"),
-        url("./fonts/Raleway-SemiBold.ttf") format("truetype");
+	font-family: "Raleway-Semibold";
+	src: local("Raleway-Semibold"),
+		url("./fonts/Raleway-SemiBold.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "Raleway-Bold";
-    src: local("Raleway-Bold"),
-        url("./fonts/Raleway-Bold.ttf") format("truetype");
+	font-family: "Raleway-Bold";
+	src: local("Raleway-Bold"),
+		url("./fonts/Raleway-Bold.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "Circular-Std";
-    src: local("Circular-Std"),
-        url("./fonts/Circular-Std.ttf") format("truetype");
+	font-family: "Circular-Std";
+	src: local("Circular-Std"),
+		url("./fonts/Circular-Std.ttf") format("truetype");
 }

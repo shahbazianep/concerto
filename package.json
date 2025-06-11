@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@vercel/analytics": "^1.5.0",
     "animejs": "^3.2.1",
     "bottleneck": "^2.19.5",
     "dayjs": "^1.11.9",
@@ -51,5 +52,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "axios": "^1.6.2"
-  }
+  },
+  "packageManager": "yarn@4.0.0-rc.45+sha512.330ce9b00b7f62f31b719463d319914d9987eedbf84fa4b04a4db6f459404c9ba466dfb9bafc20f48e466ba42e7cddad595befc6086ef005723857c237a1eeff"
 }
